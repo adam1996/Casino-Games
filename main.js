@@ -8,6 +8,7 @@
 */
 
 //const prompt = require("prompt-sync")();
+console.log('TEST')
 import prompt from './node_modules/prompt-sync';
 
 const deposit = () => {
