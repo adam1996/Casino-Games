@@ -7,7 +7,8 @@
 6. Allow user to continue or exit or whether loser falls bellow 0 in account. 
 */
 
-const prompt = require("prompt-sync")();
+//const prompt = require("prompt-sync")();
+import prompt from './node_modules/prompt-sync';
 
 const deposit = () => {
     while(true){
@@ -20,3 +21,5 @@ const deposit = () => {
         }
     }
 }
+console.log('This is working')
+coonsole.log(deposit());
