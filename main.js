@@ -21,5 +21,5 @@ const deposit = () => {
         }
     }
 }
-console.log('This is working')
-coonsole.log(deposit());
+console.log('This is working');
+console.log(deposit());
