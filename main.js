@@ -21,5 +21,21 @@ const deposit = () => {
         }
     }
 }
-console.log('This is working');
-console.log(deposit());
+
+const getNumberOfLines = () => {
+    while(true){
+        const lines = prompt('How many lines would you like to bet on (1 - 3): ');
+        const numberOfLines = parseFloat(lines);
+
+        if (isNaN(numberOfLines) || numberOfLines <= 0 || numberOfLines > 3){
+            console.log('Sorry - you did not enter a number between 1 and 3. Please try again: ')
+        } else {
+            return numberOfLines
+        }
+    }
+}
+
+let x = deposit();
+let y = getNumberOfLines();
+console.log(x);
+console.log(y);
