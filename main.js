@@ -76,7 +76,7 @@ const getBet = (balance, lines) => {
 Spin() --> 
     + Convert SYMBOLS_COUNT into an array displaying all possible outcomes. 
     + For each iteration of Spin remove() each symbol from above arr due to it being chosen randomly- therefore, correct randomness applies.
-    + Reels [[], [], []] contains our output - nested for loop to populate each entry point. 
+    + Reels [[], [], []] contains our output - nested for loop to populate row with symbols based on global counts. 
     */
 
 const spin = () => {
@@ -87,8 +87,9 @@ const spin = () => {
         }
     }
     
-    const reels = [[], [], []] //Nested arr to display spin output. 
+    const reels = [] //Nested arr to display spin output based on global COLS. 
     for (i = 0; i < COLS; i++){
+        reels.push([]);
         const reelSymbols = [...symbols];
         for (j = 0; j < ROWS; j++){
             const randIndex = Math.floor(Math.random() * reelSymbols.length);
@@ -102,7 +103,62 @@ const spin = () => {
     return reels;
 }
 
+/*Transposing reels matrix to display generated output in logical readable fashion--> 
+Reels = [[A , B , C], [B, B, D], [D, A, A]] 
+Transpose () -->
+[[A, B , D], [B, B, A], [C, D, D]]
 
++ Probably a more logical way to do this at creation of the reel. 
+*/
+
+const transpose = (reels) => {
+    const rows = []
+
+    for(let i = 0; i < ROWS; i++){
+        rows.push([])
+        for (let j = 0; j < COLS; j++){
+            rows[i].push(reels[j][i]);
+        }
+    }
+
+    return rows;
+}
+
+const displayRows = (rows) => {
+    for (const row of rows){
+        let rowString = "";
+        
+        for (const [i, symbol] of rows.entries()) {
+            rowString += symbol; 
+            if (i != rows.length - 1){
+                rowString += ' | '; //Add sep if i is not end of line. 
+            }
+        }
+        console.log(rowString);
+    }
+}
+
+const checkWinnings = (rows, bet, lines) => {
+    let winnings = 0;
+
+    for(let row = 0; row < lines; row++){
+        const symbols = rows[row];
+        let allSame = true;
+
+        for(const symbol of symbols){
+            if(symbol != symbols[0]){
+                allSame = false;
+                break; //Exit loop if loss due to mismatch. 
+            }
+        }
+
+        if(allSame){
+            winnings += bet * SYMBOLS_VALUE[symbols[0]]; //multiply bet by multiplier of symbol
+        }
+    }
+
+    return winnings;
+}
 
 let balance = deposit();
 let lines = getNumberOfLines();
@@ -112,4 +168,10 @@ console.log('Your deposit ammount is: ' + balance);
 console.log('You have chosen to bet: ' + bet + ' on ' + lines + ' Lines. Good Luck');
 
 const reels = spin();
-console.log(reels);
+console.log('Prior to transpose()', reels);
+const rows = transpose(reels);
+console.log(rows);
+
+displayRows(rows);
+const winnings = checkWinnings(rows, bet, lines);
+console.log('You have won, £' + winnings.toString());
