@@ -47,7 +47,7 @@ const deposit = () => {
 
 const getNumberOfLines = () => {
     while(true){
-        const lines = prompt('How many lines would you like to bet on (1 - 3): ');
+        const lines = prompt('How many lines would you like to bet on (1 - 3) \n Remember three lines will cost triple your bet.');
         const numberOfLines = parseFloat(lines);
 
         if (isNaN(numberOfLines) || numberOfLines <= 0 || numberOfLines > 3){
@@ -60,7 +60,7 @@ const getNumberOfLines = () => {
 
 const getBet = (balance, lines) => {
     while(true){
-        const bet = prompt('Please enter how much you would like to bet on this round (Remember your bet is multipled by the number of lines you have selected to bet on): ');
+        const bet = prompt('Please enter your bet ammount for this round. \nRemember your bet is multipled by the number of lines you have selected to bet on): ');
         const numBet = parseFloat(bet);
         
         // Total bet is num of lines * bet ammount, check must divide balance by numOfLines
@@ -124,7 +124,7 @@ const transpose = (reels) => {
     return rows;
 }
 
-const displayRows = (rows) => {
+const printRows = (rows) => {
     for (const row of rows){
         let rowString = "";
         
@@ -160,18 +160,50 @@ const checkWinnings = (rows, bet, lines) => {
     return winnings;
 }
 
+const game = () => {
+    let balance = deposit();
+
+    while(true){
+        alert('You have a balance of £' + balance);
+        let lines = getNumberOfLines();
+        let bet = getBet(balance, lines);
+        balance -= bet * lines;
+        const reels = spin();
+        const rows = transpose(reels);
+        printRows(rows);
+        const winnings = checkWinnings(rows, bet, lines);
+        balance += winnings;
+        alert('You have won, £' + winnings.toString());
+
+        if (balance <= 0){
+            alert('You ran out of money!!')
+            break;
+        }
+        
+        const playAgain = prompt('Do you want to play some more? (y/n)');
+        if (playAgain != 'y') break;
+    }
+
+    
+}
+
+game();
+
+/*
 let balance = deposit();
 let lines = getNumberOfLines();
 let bet = getBet(balance, lines);
 
 console.log('Your deposit ammount is: ' + balance);
-console.log('You have chosen to bet: ' + bet + ' on ' + lines + ' Lines. Good Luck');
+alert('You have chosen to bet: ' + bet + ' on ' + lines + ' Lines. Good Luck');
 
 const reels = spin();
 console.log('Prior to transpose()', reels);
 const rows = transpose(reels);
-console.log(rows);
+alert(rows);
 
 displayRows(rows);
 const winnings = checkWinnings(rows, bet, lines);
 console.log('You have won, £' + winnings.toString());
+alert('You have won, £' + winnings.toString());
+*/
