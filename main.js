@@ -76,14 +76,33 @@ const getBet = (balance, lines) => {
 Spin() --> 
     + Convert SYMBOLS_COUNT into an array displaying all possible outcomes. 
     + For each iteration of Spin remove() each symbol from above arr due to it being chosen randomly- therefore, correct randomness applies.
-*/
+    + Reels [[], [], []] contains our output - nested for loop to populate each entry point. 
+    */
 
 const spin = () => {
     const symbols = [];
     for (const [symbol, count] of Object.entries(SYMBOLS_COUNT)){
-        console.log(symbol, count);
+        for (i = 0; i < count; i++){
+            symbols.push(symbol);
+        }
     }
+    
+    const reels = [[], [], []] //Nested arr to display spin output. 
+    for (i = 0; i < COLS; i++){
+        const reelSymbols = [...symbols];
+        for (j = 0; j < ROWS; j++){
+            const randIndex = Math.floor(Math.random() * reelSymbols.length);
+            const selectedSymbol = reelSymbols[randIndex];
+
+            reels[i].push(selectedSymbol); //Add rand selected symbol to inner arr.
+            reelSymbols.splice(randIndex, 1); //Update local possible symbols arr by slicing/removing our randomly given index- delete count arg set to 1. 
+        }
+    }
+
+    return reels;
 }
+
+
 
 let balance = deposit();
 let lines = getNumberOfLines();
@@ -92,4 +111,5 @@ let bet = getBet(balance, lines);
 console.log('Your deposit ammount is: ' + balance);
 console.log('You have chosen to bet: ' + bet + ' on ' + lines + ' Lines. Good Luck');
 
-spin();
+const reels = spin();
+console.log(reels);
