@@ -30,12 +30,27 @@ const getNumberOfLines = () => {
         if (isNaN(numberOfLines) || numberOfLines <= 0 || numberOfLines > 3){
             console.log('Sorry - you did not enter a number between 1 and 3. Please try again: ')
         } else {
-            return numberOfLines
+            return numberOfLines;
         }
     }
 }
 
-let x = deposit();
-let y = getNumberOfLines();
-console.log(x);
-console.log(y);
+const getBet = (balance) => {
+    while(true){
+        const bet = prompt('Please enter how much you would like to bet on this round: ');
+        const numBet = parseFloat(bet);
+
+        if(isNaN(numBet) || numBet <= 0 || numBet > balance){
+            console.log('Apologies- It appears your bet may exceed your current balance of ' + balance + '. Please input again. '); 
+        } else {
+            return numBet;
+        }
+    }
+}
+
+let depositAmmount = deposit();
+let lines = getNumberOfLines();
+let bet = getBet();
+
+console.log('Your deposit ammount is: ' + depositAmmount);
+console.log('You have chosen to bet: ' + bet + ' on ' + lines + ' Lines. Good Luck');
