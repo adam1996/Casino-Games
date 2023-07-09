@@ -5,11 +5,34 @@
 4. Play game 
 5. Update user amounts with winnings or losses
 6. Allow user to continue or exit or whether loser falls bellow 0 in account. 
+
+
+https://www.freecodecamp.org/news/how-to-loop-through-an-array-in-javascript-js-iterate-tutorial/
+
+For .. in --> Gives us access to our obj keys- not values. 
+For .. of --> Gives us access to the actual values of our obj
+
+
 */
 
 //const prompt = require("prompt-sync")();
-console.log('TEST')
 
+const ROWS = 3;
+const COLS = 3; 
+
+const SYMBOLS_COUNT = {
+    'A' : 2,
+    'B' : 4, 
+    'C' : 6, 
+    'D' : 8,
+};
+
+const SYMBOLS_VALUE = {
+    'A' : 5,
+    'B' : 4, 
+    'C' : 3, 
+    'D' : 2,
+}
 const deposit = () => {
     while(true){
         const depositAmmount = prompt('Please enter your initial deposit ammount: ')
@@ -35,12 +58,13 @@ const getNumberOfLines = () => {
     }
 }
 
-const getBet = (balance) => {
+const getBet = (balance, lines) => {
     while(true){
-        const bet = prompt('Please enter how much you would like to bet on this round: ');
+        const bet = prompt('Please enter how much you would like to bet on this round (Remember your bet is multipled by the number of lines you have selected to bet on): ');
         const numBet = parseFloat(bet);
-
-        if(isNaN(numBet) || numBet <= 0 || numBet > balance){
+        
+        // Total bet is num of lines * bet ammount, check must divide balance by numOfLines
+        if(isNaN(numBet) || numBet <= 0 || numBet > balance / lines){
             console.log('Apologies- It appears your bet may exceed your current balance of ' + balance + '. Please input again. '); 
         } else {
             return numBet;
@@ -48,9 +72,24 @@ const getBet = (balance) => {
     }
 }
 
-let depositAmmount = deposit();
-let lines = getNumberOfLines();
-let bet = getBet();
+/*
+Spin() --> 
+    + Convert SYMBOLS_COUNT into an array displaying all possible outcomes. 
+    + For each iteration of Spin remove() each symbol from above arr due to it being chosen randomly- therefore, correct randomness applies.
+*/
 
-console.log('Your deposit ammount is: ' + depositAmmount);
+const spin = () => {
+    const symbols = [];
+    for (const [symbol, count] of Object.entries(SYMBOLS_COUNT)){
+        console.log(symbol, count);
+    }
+}
+
+let balance = deposit();
+let lines = getNumberOfLines();
+let bet = getBet(balance, lines);
+
+console.log('Your deposit ammount is: ' + balance);
 console.log('You have chosen to bet: ' + bet + ' on ' + lines + ' Lines. Good Luck');
+
+spin();
